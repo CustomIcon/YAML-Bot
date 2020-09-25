@@ -7,6 +7,7 @@ import traceback
 
 from yamlbot import YamlBot
 from bprint import bprint as p
+from yamlbot.plugins.nekobin import nekobin
 
 
 async def aexec(code, client, message):
@@ -25,4 +26,12 @@ async def prettyprint(client, message):
     await aexec(cmd, client, message)
     evaluation = redirected_output.getvalue()
     final_output = f"```{evaluation.strip()}```"
-    await message.reply_text(final_output)
+    if len(final_output) > 4096:
+        filename = "output.txt"
+        with open(filename, "w+", encoding="utf8") as out_file:
+            out_file.write(str(evaluation.strip()))
+            data = await nekobin(message, out_file.read())
+        await message.reply_document(document=filename, caption=data)
+        os.remove(filename)
+    else:
+        await message.reply_text(final_output)
