@@ -5,6 +5,9 @@ from pyrogram import Client
 
 class YamlBot(Client):
     def __init__(self, name):
+        """
+        Custom Client for YAM-Bot
+        """
         name = name.lower()
         config_file = f"{name}.ini"
 

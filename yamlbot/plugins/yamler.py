@@ -1,9 +1,8 @@
 from pyrogram import filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import sys
-import re
 from io import StringIO
 import os
-import traceback
 
 from yamlbot import YamlBot
 from bprint import bprint as p
@@ -11,14 +10,14 @@ from yamlbot.plugins.nekobin import nekobin
 
 
 async def aexec(code, client, message):
-    exec(f"async def __aexec(client, message): "+"".join(f"\n {l}" for l in code.split("\n")))
+    exec("async def __aexec(client, message): "+"".join(f"\n {l}" for l in code.split("\n")))
     return await locals()["__aexec"](client, message)
 
 
 @YamlBot.on_message(~filters.private & filters.command(['yaml', 'yaml@pyrogramyamlbot']))
 @YamlBot.on_message(filters.private)
 async def prettyprint(client, message):
-    cmd = f'p(message, stream=sys.stdout)'
+    cmd = 'p(message, stream=sys.stdout)'
     redirected_output = sys.stdout = StringIO()
     await aexec(cmd, client, message)
     evaluation = redirected_output.getvalue()
@@ -29,7 +28,8 @@ async def prettyprint(client, message):
             out_file.write(str(evaluation.strip()))
         with open(filename, "r") as f:
             data = await nekobin(message, f.read())
-        await message.reply_document(document=filename, caption=data)
+        keyb = InlineKeyboardMarkup([[InlineKeyboardButton('Nekobin', url=data)]])
+        await message.reply_document(document=filename, reply_markup=keyb)
         os.remove(filename)
     else:
         await message.reply_text(final_output)
