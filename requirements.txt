@@ -1,3 +1,4 @@
 pyrogram
 tgcrypto
+aiohttp
 git+https://github.com/Lonami/bprint

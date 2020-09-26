@@ -1,3 +1,6 @@
+"""
+Pyrogram client for YAML-Bot
+"""
 import logging
 from configparser import ConfigParser
 from datetime import datetime

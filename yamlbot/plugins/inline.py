@@ -8,7 +8,7 @@ from pyrogram.errors.exceptions.bad_request_400 import UserIsBlocked
 @YamlBot.on_inline_query()
 async def inline_query_handler(client, message):
     answers = []
-    cmd = f'p(message, stream=sys.stdout)'
+    cmd = 'p(message, stream=sys.stdout)'
     redirected_output = sys.stdout = StringIO()
     await aexec(cmd, client, message)
     evaluation = redirected_output.getvalue()
