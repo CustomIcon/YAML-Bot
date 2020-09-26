@@ -1,3 +1,1 @@
-"""
-Modules Directory
-"""
+"""Modules Directory."""
