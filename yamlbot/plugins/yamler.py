@@ -1,4 +1,5 @@
 from pyrogram import filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import sys
 import re
 from io import StringIO
@@ -29,7 +30,8 @@ async def prettyprint(client, message):
             out_file.write(str(evaluation.strip()))
         with open(filename, "r") as f:
             data = await nekobin(message, f.read())
-        await message.reply_document(document=filename, caption=data)
+        keyb = InlineKeyboardMarkup([[InlineKeyboardButton('Nekobin', url=data)]])
+        await message.reply_document(document=filename, reply_markup=keyb)
         os.remove(filename)
     else:
         await message.reply_text(final_output)
