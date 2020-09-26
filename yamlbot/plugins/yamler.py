@@ -10,11 +10,7 @@ from yamlbot.plugins.nekobin import nekobin
 
 
 async def aexec(code, client, message):
-<<<<<<< cleanup-and-improvements
     exec("async def __aexec(client, message): "+"".join(f"\n {l}" for l in code.split("\n")))
-=======
-    exec(f"async def __aexec(client, message): "+"".join(f"\n {l}" for l in code.split("\n")))
->>>>>>> master
     return await locals()["__aexec"](client, message)
 
 
@@ -32,12 +28,8 @@ async def prettyprint(client, message):
             out_file.write(str(evaluation.strip()))
         with open(filename, "r") as f:
             data = await nekobin(message, f.read())
-<<<<<<< cleanup-and-improvements
         keyb = InlineKeyboardMarkup([[InlineKeyboardButton('Nekobin', url=data)]])
         await message.reply_document(document=filename, reply_markup=keyb)
-=======
-        await message.reply_document(document=filename, caption=data)
->>>>>>> master
         os.remove(filename)
     else:
         await message.reply_text(final_output)
