@@ -1,5 +1,6 @@
 import aiohttp
 
+
 async def nekobin(message, data):
     BASE_URL = 'https://nekobin.com'
     async with aiohttp.ClientSession() as session:

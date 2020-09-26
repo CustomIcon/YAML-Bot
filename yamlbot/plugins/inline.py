@@ -4,6 +4,7 @@ from io import StringIO
 import sys
 from pyrogram.errors.exceptions.bad_request_400 import UserIsBlocked
 
+
 @YamlBot.on_inline_query()
 async def inline_query_handler(client, message):
     answers = []
