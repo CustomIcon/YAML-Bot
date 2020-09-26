@@ -7,7 +7,7 @@ import traceback
 
 from yamlbot import YamlBot
 from bprint import bprint as p
-from yamlbot.plugins.deldog import deldog
+from yamlbot.plugins.nekobin import nekobin
 
 
 async def aexec(code, client, message):
@@ -30,8 +30,8 @@ async def prettyprint(client, message):
         filename = "output.txt"
         with open(filename, "w+", encoding="utf8") as out_file:
             out_file.write(str(evaluation.strip()))
-        f = open(filename, "r")
-        data = await deldog(message, f.read())
+        with open(filename, "r") as f:
+            data = await nekobin(message, f.read())
         await message.reply_document(document=filename, caption=data)
         os.remove(filename)
     else:
