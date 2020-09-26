@@ -30,7 +30,8 @@ async def prettyprint(client, message):
         filename = "output.txt"
         with open(filename, "w+", encoding="utf8") as out_file:
             out_file.write(str(evaluation.strip()))
-            data = await deldog(message, out_file.read())
+        f = open(filename, "r")
+        data = await deldog(message, f.read())
         await message.reply_document(document=filename, caption=data)
         os.remove(filename)
     else:
