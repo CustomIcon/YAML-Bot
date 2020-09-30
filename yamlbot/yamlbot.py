@@ -1,6 +1,11 @@
+from os import environ
 from configparser import ConfigParser
-
 from pyrogram import Client
+
+
+API_ID = environ.get('API_ID', None)
+API_HASH = environ.get('API_HASH', None)
+BOT_SESSION = environ.get('BOT_SESSION', None)
 
 
 class YamlBot(Client):
@@ -15,7 +20,9 @@ class YamlBot(Client):
         plugins = dict(root=f"{name}.plugins", )
 
         super().__init__(
-            name,
+            BOT_SESSION if BOT_SESSION is not None else name,
+            api_id=API_ID,
+            api_hash=API_HASH,
             config_file=config_file,
             workers=16,
             plugins=plugins,
