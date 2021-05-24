@@ -17,7 +17,7 @@ async def inline_query_handler(client, message):
         await client.send_message(message.from_user.id, final_output)
         await client.answer_inline_query(message.id,
                                         results=answers,
-                                        switch_pm_text="Your Yaml was sent to pm",
+                                        switch_pm_text="Output was sent to pm",
                                         switch_pm_parameter="start"
                                         )
     except UserIsBlocked:

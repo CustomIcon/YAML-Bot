@@ -1,4 +1,4 @@
-from pyrogram import filters
+from pyrogram import filters, types
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import sys
 from io import StringIO
@@ -16,7 +16,11 @@ async def aexec(code, client, message):
 
 @YamlBot.on_message(~filters.private & filters.command(['yaml', 'yaml@pyrogramyamlbot']))
 @YamlBot.on_message(filters.private)
-async def prettyprint(client, message):
+async def prettyprint(client, message: types.Message):
+    if message.sender_chat:
+        user_id = message.sender_chat.id
+    else:
+        user_id = message.from_user.id
     cmd = 'p(message, stream=sys.stdout)'
     redirected_output = sys.stdout = StringIO()
     await aexec(cmd, client, message)
@@ -28,8 +32,30 @@ async def prettyprint(client, message):
             out_file.write(str(evaluation.strip()))
         with open(filename, "r") as f:
             data = await nekobin(message, f.read())
-        keyb = InlineKeyboardMarkup([[InlineKeyboardButton('Nekobin', url=data)]])
-        await message.reply_document(document=filename, reply_markup=keyb)
+        await message.reply_document(
+            document=filename,
+            quote=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton('Nekobin', url=data)
+                    ],
+                    [
+                        InlineKeyboardButton('Delete Message', callback_data=f'remove_{user_id}')
+                    ]
+                ]
+            )
+        )
         os.remove(filename)
     else:
-        await message.reply_text(final_output)
+        await message.reply_text(
+            final_output,
+            quote=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton('Delete Message', callback_data=f'remove_{user_id}')
+                    ]
+                ]
+            )
+        )

@@ -126,3 +126,4 @@ dmypy.json
 yamlbot.ini
 *.session
 *.xml
+.vscode/settings.json
